@@ -27,7 +27,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        <Script 
+        <meta name="google-adsense-account" content="ca-pub-2579251919353845"></meta>
+        <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2579251919353845"
           crossOrigin="anonymous"
