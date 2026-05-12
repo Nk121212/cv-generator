@@ -27,14 +27,15 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-      </head>
-      <body className={`${inter.variable} ${poppins.variable} font-sans bg-slate-50 text-slate-900 min-h-screen flex flex-col`}>
-        <Script
+        <Script 
           async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || 'pub-2579251919353845'}`}
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2579251919353845"
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+      </head>
+      <body className={`${inter.variable} ${poppins.variable} font-sans bg-slate-50 text-slate-900 min-h-screen flex flex-col`}>
+
         <TooltipProvider>
           <Navbar />
           <main className="flex-grow">
