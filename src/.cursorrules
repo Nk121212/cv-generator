@@ -1,0 +1,662 @@
+# AntiGravity AI Script Agent — CV Forge
+
+## PROJECT CONTEXT
+
+Nama project: CV Forge
+Framework: Next.js 16 App Router
+Frontend: React 19 + TypeScript
+Styling: TailwindCSS v4 + shadcn/ui
+Animation: Framer Motion
+State Management: Zustand
+PDF/Image Export:
+
+* jspdf
+* html2canvas
+* html-to-image
+
+Payment Gateway:
+
+* PayPal
+* Midtrans
+
+Deployment:
+
+* Vercel
+
+Target aplikasi:
+CV Forge adalah AI-powered resume / CV builder berbasis web yang memungkinkan user:
+
+* membuat CV ATS-friendly
+* export PDF
+* custom template
+* generate CV dengan AI
+* save draft
+* melakukan pembayaran premium
+* menggunakan template modern
+* melakukan export image / pdf
+* monetisasi dengan ads dan premium plan
+
+---
+
+# TECH STACK
+
+## Core
+
+* Next.js 16.2.6
+* React 19.2.4
+* TypeScript 5
+
+## UI
+
+* TailwindCSS v4
+* shadcn/ui
+* Base UI
+* Lucide React
+* Framer Motion
+
+## Utility
+
+* clsx
+* class-variance-authority
+* tailwind-merge
+
+## State
+
+* Zustand
+
+## Export
+
+* html2canvas
+* html-to-image
+* jspdf
+
+## Payment
+
+* Midtrans
+* PayPal
+
+## Deployment
+
+* Vercel
+
+---
+
+# PRIMARY AGENT GOALS
+
+Agent harus mampu:
+
+1. Membuat feature production-ready
+2. Membuat UI modern dan responsive
+3. Menjaga clean architecture
+4. Menjaga performa Next.js
+5. Menjaga SEO optimization
+6. Menjaga accessibility
+7. Menjaga ATS compatibility pada CV
+8. Membuat monetization system
+9. Membuat ads placement yang aman
+10. Membuat scalable folder structure
+11. Membuat reusable components
+12. Menjaga security best practice
+13. Menjaga mobile-first responsive design
+14. Menjaga code readability
+15. Membuat conversion-focused UX
+
+---
+
+# GLOBAL RULES
+
+## GENERAL
+
+* Selalu gunakan TypeScript strict typing
+* Hindari any
+* Gunakan functional component
+* Gunakan App Router Next.js
+* Hindari deprecated API
+* Gunakan server component jika memungkinkan
+* Gunakan client component hanya jika dibutuhkan
+* Jangan membuat logic terlalu besar dalam component
+* Pisahkan logic ke hooks/services
+* Gunakan reusable component
+* Gunakan semantic HTML
+* Semua code harus scalable
+* Semua code harus production-ready
+* Semua code harus mobile responsive
+* Semua UI harus clean modern minimal
+* Semua component harus accessible
+
+---
+
+# NEXT.JS RULES
+
+## APP ROUTER
+
+Selalu gunakan:
+
+* app/
+* route.ts
+* server actions jika cocok
+* loading.tsx
+* error.tsx
+* not-found.tsx
+
+Hindari:
+
+* pages router
+* getServerSideProps
+* getInitialProps
+
+## PERFORMANCE
+
+* Gunakan dynamic import untuk heavy component
+* Gunakan lazy loading
+* Gunakan next/image
+* Hindari unnecessary rerender
+* Gunakan memoization jika dibutuhkan
+* Optimalkan bundle size
+* Jangan import library besar jika tidak perlu
+
+## SEO
+
+Selalu:
+
+* generateMetadata
+* OpenGraph
+* Twitter Card
+* sitemap
+* robots.txt
+* structured data jika cocok
+* semantic heading
+
+---
+
+# UI/UX RULES
+
+## DESIGN PRINCIPLES
+
+Design harus:
+
+* modern
+* minimal
+* premium
+* ATS-friendly
+* conversion-focused
+* clean spacing
+* readable typography
+* responsive
+
+## COMPONENT STYLE
+
+* Gunakan rounded-xl atau rounded-2xl
+* Gunakan soft shadow
+* Gunakan consistent spacing
+* Gunakan hover transition halus
+* Gunakan motion seperlunya
+* Jangan over-animation
+* Gunakan skeleton loading
+* Gunakan empty state
+* Gunakan toast feedback
+
+## RESPONSIVE
+
+Support:
+
+* mobile
+* tablet
+* desktop
+
+Mobile-first wajib.
+
+---
+
+# CV BUILDER RULES
+
+## ATS RULES
+
+CV harus:
+
+* mudah dibaca ATS
+* tidak menggunakan layout berlebihan
+* support export PDF clean
+* typography jelas
+* spacing konsisten
+* section standard
+
+## REQUIRED CV SECTIONS
+
+* Header
+* Summary
+* Experience
+* Education
+* Skills
+* Projects
+* Certifications
+* Contact
+
+## EXPORT RULES
+
+* PDF export harus stabil
+* Hindari layout break saat export
+* Pastikan A4 compatible
+* Hindari overflow
+* Gunakan print-safe styling
+
+---
+
+# AI FEATURES RULES
+
+Agent harus bisa membuat:
+
+* AI Resume Generator
+* AI Summary Generator
+* AI Skill Suggestions
+* AI Cover Letter Generator
+* AI ATS Checker
+* AI Resume Improvement
+* AI Resume Scoring
+
+## AI OUTPUT RULES
+
+AI output harus:
+
+* professional
+* concise
+* ATS optimized
+* tidak terlalu panjang
+* relevan dengan role
+* readable
+
+---
+
+# PAYMENT RULES
+
+## MIDTRANS
+
+Gunakan:
+
+* server-side secret key
+* environment variables
+* webhook validation
+* transaction logging
+
+Jangan:
+
+* expose secret key
+* proses payment di client
+
+## PAYPAL
+
+* gunakan official SDK
+* validate transaction
+* gunakan secure callback
+
+---
+
+# MONETIZATION RULES
+
+## ADSENSE
+
+Support:
+
+* Google AdSense
+* banner ads
+* responsive ads
+* in-content ads
+
+## ADS RULES
+
+* Jangan terlalu banyak ads
+* Jangan mengganggu UX
+* Jangan inject ads di editor CV
+* Ads aman untuk mobile
+* Gunakan lazy loading ads
+* Hindari CLS tinggi
+
+## ADS PLACEMENT
+
+Recommended:
+
+* homepage
+* blog
+* dashboard sidebar
+* article page
+* tool result page
+
+Avoid:
+
+* export page
+* payment page
+* CV editor utama
+
+---
+
+# SECURITY RULES
+
+## SECURITY
+
+* Gunakan environment variables
+* Sanitasi user input
+* Hindari XSS
+* Hindari exposing API key
+* Validate server request
+* Rate limiting jika perlu
+* Jangan trust client data
+* Gunakan secure headers
+
+## AUTH
+
+Jika membuat auth:
+
+* gunakan secure session
+* gunakan httpOnly cookie
+* jangan simpan token sensitif di localStorage
+
+---
+
+# STATE MANAGEMENT RULES
+
+## ZUSTAND
+
+Gunakan Zustand untuk:
+
+* editor state
+* template state
+* theme state
+* auth UI state
+
+Hindari global state berlebihan.
+
+---
+
+# FOLDER STRUCTURE RULES
+
+Gunakan struktur:
+
+src/
+├── app/
+├── components/
+│    ├── ui/
+│    ├── shared/
+│    ├── cv/
+│    ├── ads/
+│    └── payment/
+├── hooks/
+├── lib/
+├── services/
+├── store/
+├── types/
+├── utils/
+├── config/
+└── styles/
+
+---
+
+# COMPONENT RULES
+
+## COMPONENT PRINCIPLES
+
+* Satu component satu tanggung jawab
+* Hindari component terlalu besar
+* Gunakan props typing jelas
+* Gunakan reusable patterns
+* Pisahkan UI dan business logic
+
+## NAMING
+
+Gunakan:
+
+* PascalCase untuk component
+* camelCase untuk variable/function
+* kebab-case untuk folder route
+
+---
+
+# API RULES
+
+## API DESIGN
+
+* gunakan REST clean
+* validasi request
+* gunakan proper status code
+* gunakan structured response
+
+Contoh:
+
+{
+success: true,
+data: {},
+message: "Success"
+}
+
+---
+
+# ERROR HANDLING RULES
+
+Selalu:
+
+* gunakan try/catch
+* tampilkan friendly error
+* log error server
+* hindari crash UI
+
+---
+
+# ACCESSIBILITY RULES
+
+Wajib:
+
+* aria-label
+* keyboard navigation
+* color contrast baik
+* semantic HTML
+* focus state jelas
+
+---
+
+# DARK MODE RULES
+
+Support:
+
+* light mode
+* dark mode
+* system mode
+
+Gunakan theme-safe colors.
+
+---
+
+# BLOG & SEO CONTENT RULES
+
+Jika membuat blog:
+
+* SEO optimized
+* gunakan heading hierarchy
+* internal linking
+* readable paragraph
+* mobile optimized
+* support ads placement
+
+---
+
+# ADS COMPONENT TOOL
+
+## AdsenseBanner.tsx
+
+Tujuan:
+Reusable Google AdSense component.
+
+Requirements:
+
+* responsive
+* safe hydration
+* lazy load
+* no duplicate injection
+* compatible App Router
+
+---
+
+# PDF EXPORT TOOL
+
+## generatePdf.ts
+
+Tujuan:
+Export CV menjadi PDF A4.
+
+Requirements:
+
+* multi-page support
+* clean typography
+* high quality export
+* stable rendering
+* mobile compatible
+
+---
+
+# TEMPLATE ENGINE TOOL
+
+## CV Template System
+
+Support:
+
+* dynamic template
+* customizable color
+* customizable font
+* section reorder
+* live preview
+
+---
+
+# PREMIUM SYSTEM RULES
+
+Premium features:
+
+* premium templates
+* AI generation
+* unlimited export
+* remove watermark
+* priority styles
+
+---
+
+# ANALYTICS RULES
+
+Support:
+
+* page analytics
+* conversion tracking
+* export tracking
+* premium conversion
+* ads performance
+
+Gunakan privacy-friendly approach.
+
+---
+
+# VERCEL DEPLOYMENT RULES
+
+* optimized build
+* gunakan environment variables
+* edge-ready jika cocok
+* hindari server overload
+* optimize image
+* gunakan caching
+
+---
+
+# CODE GENERATION RULES
+
+Ketika generate code:
+
+* langsung production-ready
+* lengkap dengan typing
+* responsive
+* clean architecture
+* modular
+* reusable
+* scalable
+* no placeholder logic kosong
+* gunakan best practice modern
+
+---
+
+# AGENT RESPONSE STYLE
+
+Ketika menjawab:
+
+* fokus ke solusi
+* jangan terlalu verbose
+* jelaskan struktur
+* jelaskan alasan teknis
+* berikan step implementasi
+* prioritaskan maintainability
+* prioritaskan UX
+* prioritaskan scalability
+
+---
+
+# AUTO FEATURES
+
+Agent boleh otomatis:
+
+* membuat reusable hook
+* membuat utility helper
+* membuat loading state
+* membuat skeleton
+* membuat error boundary
+* membuat responsive layout
+* membuat SEO metadata
+* membuat accessibility improvement
+* membuat code splitting
+* membuat lazy loading
+* membuat ads optimization
+* membuat monetization optimization
+
+---
+
+# DO NOT
+
+Jangan:
+
+* gunakan deprecated API
+* gunakan inline massive logic
+* gunakan hardcoded secret
+* gunakan any
+* membuat UI berantakan
+* membuat layout tidak responsive
+* membuat ads spam
+* membuat export PDF rusak
+* membuat component monster
+* membuat duplicate code
+* membuat insecure payment flow
+* membuat poor SEO structure
+
+---
+
+# PRIORITY ORDER
+
+Prioritas utama:
+
+1. Stability
+2. Scalability
+3. Performance
+4. Security
+5. UX
+6. SEO
+7. Monetization
+8. Animation
+
+---
+
+# OUTPUT EXPECTATION
+
+Setiap output harus:
+
+* siap deploy
+* clean code
+* maintainable
+* modern UI
+* optimized
+* responsive
+* SEO-ready
+* monetization-ready
+* ATS-friendly
+* production-grade
