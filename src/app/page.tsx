@@ -155,8 +155,9 @@ export default function LandingPage() {
       </section>
 
       {/* Strategic Ad Placement 1 */}
+      {/* TODO: Ganti slotId dengan ID numerik dari AdSense dashboard → Ads > Ad units */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AdsenseBanner slotId="homepage-top" format="horizontal" />
+        <AdsenseBanner slotId="1234567890" format="horizontal" />
       </div>
 
       {/* Features Section */}
@@ -185,8 +186,9 @@ export default function LandingPage() {
       </section>
 
       {/* Strategic Ad Placement 2 */}
+      {/* TODO: Ganti slotId dengan ID numerik dari AdSense dashboard → Ads > Ad units */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AdsenseBanner slotId="homepage-bottom" format="horizontal" />
+        <AdsenseBanner slotId="0987654321" format="horizontal" />
       </div>
 
       {/* CTA Section */}

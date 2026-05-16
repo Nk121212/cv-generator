@@ -132,8 +132,9 @@ export default function TemplatesPage() {
       </div>
 
       {/* Embedded AdSense Placement below templates grid */}
+      {/* TODO: Ganti slotId dengan ID numerik dari AdSense dashboard → Ads > Ad units */}
       <div className="mt-12 border-t border-slate-100 pt-8">
-        <AdsenseBanner slotId="templates-bottom" format="horizontal" />
+        <AdsenseBanner slotId="1122334455" format="horizontal" />
       </div>
     </div>
   );
