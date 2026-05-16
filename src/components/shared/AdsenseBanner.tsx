@@ -1,18 +1,11 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
-// Publisher ID yang konsisten — dengan prefix ca-
-// Hardcoded sebagai fallback jika env var tidak di-set di Vercel
-const PUBLISHER_ID = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID
-  ? // env var bisa berupa "pub-xxx" atau "ca-pub-xxx"
-    process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID.startsWith('ca-')
-    ? process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID
-    : `ca-${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`
-  : 'ca-pub-2579251919353845'; // fallback eksplisit
+const PUBLISHER_ID = 'ca-pub-2579251919353845';
 
 interface AdsenseBannerProps {
-  /** Slot ID numerik dari Google AdSense dashboard, contoh: "1234567890" */
   slotId: string;
   format?: 'auto' | 'fluid' | 'rectangle' | 'horizontal';
   responsive?: boolean;
@@ -33,42 +26,63 @@ export default function AdsenseBanner({
   className = '',
   style,
 }: AdsenseBannerProps) {
+  const [isMounted, setIsMounted] = useState(false);
+  const pathname = usePathname();
+  const pushedRef = useRef(false);
   const insRef = useRef<HTMLModElement>(null);
-  const pushed = useRef(false);
 
   useEffect(() => {
-    // Guard: hanya push sekali per instance
-    if (pushed.current) return;
-    // Guard: pastikan elemen ada di DOM
-    if (!insRef.current) return;
-
-    // Guard: jika sudah di-fill oleh AdSense (route change scenario)
-    if (insRef.current.getAttribute('data-adsbygoogle-status')) return;
-
-    pushed.current = true;
-
-    try {
-      /*
-       * Pattern yang benar untuk Next.js App Router:
-       * - Assign ke window.adsbygoogle (bukan variabel lokal)
-       * - Jika script AdSense belum load, array ini akan diproses
-       *   saat script selesai load (Google mengamati window.adsbygoogle)
-       */
-      window.adsbygoogle = window.adsbygoogle || [];
-      window.adsbygoogle.push({});
-    } catch (err) {
-      // AdSense tidak tersedia (dev mode, adblock, dsb) — bukan error fatal
-      if (process.env.NODE_ENV === 'development') {
-        console.warn('[AdsenseBanner] AdSense push skipped:', err);
-      }
-    }
+    // Avoid synchronous state update in effect to satisfy lint
+    const timer = setTimeout(() => setIsMounted(true), 0);
+    return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    // Reset push status on pathname change to allow new ads on new pages
+    pushedRef.current = false;
+  }, [pathname, slotId]);
+
+  useEffect(() => {
+    if (!isMounted || pushedRef.current) return;
+
+    const pushAd = () => {
+      try {
+        const adsbygoogle = window.adsbygoogle || [];
+        adsbygoogle.push({});
+        pushedRef.current = true;
+      } catch (err) {
+        console.error('[AdsenseBanner] Push error:', err);
+      }
+    };
+
+    // Small timeout to ensure DOM is ready and script is loaded
+    const timer = setTimeout(() => {
+      // Check if element exists in DOM via Ref
+      if (insRef.current && !insRef.current.hasAttribute('data-adsbygoogle-status')) {
+        pushAd();
+      }
+    }, 150);
+
+    return () => clearTimeout(timer);
+  }, [isMounted, pathname, slotId]);
+
+  // Placeholder during SSR to prevent hydration mismatch
+  if (!isMounted) {
+    return (
+      <div 
+        className={`w-full min-h-[100px] bg-slate-50/50 rounded-xl my-6 animate-pulse border border-slate-100 flex items-center justify-center ${className}`} 
+        aria-hidden="true"
+      >
+        <div className="text-[10px] text-slate-300 font-medium tracking-widest uppercase">Advertisement</div>
+      </div>
+    );
+  }
 
   return (
     <div
-      className={`w-full overflow-hidden flex justify-center items-center min-h-[100px] bg-slate-50/50 rounded-xl my-6 py-2 ${className}`}
-      aria-label="Advertisement"
+      className={`w-full overflow-hidden flex flex-col justify-center items-center min-h-[100px] bg-slate-50/50 rounded-xl my-6 py-4 border border-slate-100 transition-all hover:bg-slate-50 ${className}`}
     >
+      <div className="text-[9px] text-slate-300 font-bold tracking-[0.2em] uppercase mb-2">Advertisement</div>
       <ins
         ref={insRef}
         className="adsbygoogle"

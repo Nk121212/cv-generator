@@ -39,14 +39,13 @@ export default function RootLayout({
           <Footer />
         </TooltipProvider>
 
-        {/*
-          next/script dengan strategy="afterInteractive":
-          - Dijalankan setelah halaman interactive (client-side)
-          - HARUS berada di dalam <body>, bukan <head>
-          - Next.js App Router secara otomatis mengelola injeksinya
-          - crossOrigin="anonymous" diperlukan oleh Google AdSense
+        {/* 
+          Google AdSense Script
+          - Strategy afterInteractive: loads after the page is interactive
+          - crossOrigin anonymous: required for AdSense
         */}
         <Script
+          async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2579251919353845"
           strategy="afterInteractive"
           crossOrigin="anonymous"
