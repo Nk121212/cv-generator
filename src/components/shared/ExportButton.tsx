@@ -13,24 +13,20 @@ const A4_HEIGHT_PX = 1122;
 
 /**
  * Sanitize the user's full name into a valid filename.
- * "Kahfi Setiawan" → "kahfi-setiawan-cv.pdf"
  */
 function buildFilename(fullName: string): string {
   const slug = fullName
     .trim()
     .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')   // strip special chars
-    .replace(/\s+/g, '-')            // spaces → hyphens
-    .replace(/-+/g, '-')             // collapse multiple hyphens
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
     || 'my';
   return `${slug}-cv.pdf`;
 }
 
 /**
- * Trigger a file download that works on:
- *  - Desktop Chrome / Firefox / Edge (anchor download attribute)
- *  - Android Chrome (same anchor approach)
- *  - iOS Safari (open in new tab — iOS blocks programmatic blob download)
+ * Trigger a file download that works across desktop and mobile.
  */
 function downloadBlob(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
@@ -39,8 +35,6 @@ function downloadBlob(blob: Blob, filename: string): void {
   anchor.download = filename;
   anchor.rel = 'noopener noreferrer';
 
-  // iOS Safari fallback — if download attribute is unsupported, open in new tab
-  // so the user can use the share sheet to save
   if (typeof anchor.download === 'undefined') {
     anchor.target = '_blank';
   }
@@ -49,7 +43,6 @@ function downloadBlob(blob: Blob, filename: string): void {
   anchor.click();
   document.body.removeChild(anchor);
 
-  // Revoke the object URL after the browser has had time to start the download
   setTimeout(() => URL.revokeObjectURL(url), 2000);
 }
 
@@ -63,47 +56,39 @@ export default function ExportButton() {
 
     setIsExporting(true);
 
-    try {
-      /*
-       * Root cause fix: the live element has `transform: scale(X)` applied,
-       * which causes html-to-image to capture a low-res, already-scaled image.
-       *
-       * Solution: clone the element off-screen at its natural 794×1122px
-       * size with no transform, capture it, then remove the clone.
-       */
-      const clone = source.cloneNode(true) as HTMLElement;
+    // Store original styles to restore later
+    const originalTransform = source.style.transform;
+    const originalWidth = source.style.width;
+    const originalHeight = source.style.height;
 
-      // Position completely off-screen — not display:none (that breaks rendering)
-      Object.assign(clone.style, {
-        position: 'fixed',
-        top: '-9999px',
-        left: '-9999px',
-        transform: 'none',
-        width: `${A4_WIDTH_PX}px`,
-        height: `${A4_HEIGHT_PX}px`,
-        overflow: 'hidden',
-        zIndex: '-1',
+    try {
+      // 1. Ensure fonts are loaded
+      await document.fonts.ready;
+
+      // 2. Temporarily set to natural size for capture
+      // Using the LIVE element is much more reliable than cloning for fonts/styles
+      source.style.transform = 'none';
+      source.style.width = `${A4_WIDTH_PX}px`;
+      source.style.height = `${A4_HEIGHT_PX}px`;
+
+      // 3. Capture using html-to-image
+      // This library uses SVG foreignObject, which handles Tailwind 4's oklch/lab natively
+      const dataUrl = await toPng(source, {
+        quality: 1,
+        pixelRatio: 2,           // High resolution
+        backgroundColor: '#ffffff',
+        width: A4_WIDTH_PX,
+        height: A4_HEIGHT_PX,
+        cacheBust: true,         // Avoid image caching issues
+        // Ensure the capture includes all styles
+        style: {
+          transform: 'none',
+          margin: '0',
+          padding: '0',
+        }
       });
 
-      document.body.appendChild(clone);
-
-      let dataUrl: string;
-      try {
-        dataUrl = await toPng(clone, {
-          quality: 1,
-          pixelRatio: 2,           // retina-quality image in the PDF
-          backgroundColor: '#ffffff',
-          width: A4_WIDTH_PX,
-          height: A4_HEIGHT_PX,
-          // Prevent cross-origin image tainting
-          skipAutoScale: true,
-        });
-      } finally {
-        // Always clean up the clone, even if capture fails
-        document.body.removeChild(clone);
-      }
-
-      // Build A4 PDF
+      // 4. Build A4 PDF
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
@@ -116,11 +101,7 @@ export default function ExportButton() {
 
       pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
 
-      /*
-       * Root cause fix: pdf.save() uses an implicit <a> click which is blocked
-       * by Safari iOS and some Android WebViews. Instead, get the raw blob
-       * and trigger our own anchor click with an explicit `.pdf` extension.
-       */
+      // 5. Output as blob and download (mobile-safe)
       const blob = pdf.output('blob');
       const filename = buildFilename(data.personalInfo.fullName);
       downloadBlob(blob, filename);
@@ -128,6 +109,10 @@ export default function ExportButton() {
       console.error('[ExportButton] PDF export failed:', error);
       alert('Gagal mendownload PDF. Silakan coba lagi.');
     } finally {
+      // 6. Restore original styles
+      source.style.transform = originalTransform;
+      source.style.width = originalWidth;
+      source.style.height = originalHeight;
       setIsExporting(false);
     }
   };
