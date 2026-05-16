@@ -33,7 +33,7 @@ export default function AdsenseBanner({
   className = '',
   style,
 }: AdsenseBannerProps) {
-  const insRef = useRef<HTMLElement>(null);
+  const insRef = useRef<HTMLModElement>(null);
   const pushed = useRef(false);
 
   useEffect(() => {
